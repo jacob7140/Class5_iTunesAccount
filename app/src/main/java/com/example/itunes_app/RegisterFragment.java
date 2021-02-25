@@ -60,16 +60,35 @@ public class RegisterFragment extends Fragment {
                     Toast.makeText(getActivity(), "Password/Email or Password cannot be empty", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    DataServices.Account account = DataServices.register(name, email, password);
-                    if( account!=null){
-                        Toast.makeText(getActivity(), "Successfull Registration", Toast.LENGTH_SHORT).show();
-                        mListener.loginIsSuccessful(account);
-                    }else {
+                    DataServices.register(name, email, password, new DataServices.AuthResponse() {
+                        @Override
+                        public void onSuccess(String token) {
+                            DataServices.getAccount(token, new DataServices.AccountResponse() {
+                                @Override
+                                public void onSuccess(DataServices.Account account) {
+                                    Toast.makeText(getContext(), "Successful Registration", Toast.LENGTH_SHORT).show();
+                                    mListener.loginIsSuccessful(account);
+                                }
 
-                        Toast.makeText(getActivity(), "UnSuccessfull Registration", Toast.LENGTH_SHORT).show();
-                    }
+                                @Override
+                                public void onFailure(DataServices.RequestException exception) {
+                                    Log.d("data", "onFailure: Could not get account");
+
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onFailure(DataServices.RequestException exception) {
+                            Toast.makeText(getActivity(), "Unsuccessful Registration", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
 
                 }
+
+
             }
         });
 

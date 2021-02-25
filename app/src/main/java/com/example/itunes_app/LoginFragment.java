@@ -30,25 +30,23 @@ public class LoginFragment extends Fragment {
 
     }
 
-    EditText editTextEmail,editTextPassword;
+    EditText editTextEmail, editTextPassword;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //to set the title of the fragement
+        //to set the title of the fragment
         getActivity().setTitle("Login");
 
 
-
-
-        View view= inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         // grab the values
-        editTextEmail=view.findViewById(R.id.editTextTextEmailAddress);
-        editTextPassword=view.findViewById(R.id.editTextTextPassword);
+        editTextEmail = view.findViewById(R.id.editTextTextEmailAddress);
+        editTextPassword = view.findViewById(R.id.editTextTextPassword);
 
-        Log.d("login","Email = "+editTextEmail+" password ="+editTextPassword);
-
+        Log.d("login", "Email = " + editTextEmail + " password =" + editTextPassword);
 
 
         view.findViewById(R.id.buttonLoginFragment).setOnClickListener(new View.OnClickListener() {
@@ -57,21 +55,40 @@ public class LoginFragment extends Fragment {
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
 
-                InputMethodManager imm= (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                if(email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(getActivity(),"Password/Email cannot be empty",Toast.LENGTH_SHORT).show();
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getActivity(), "Password/Email cannot be empty", Toast.LENGTH_SHORT).show();
 
+                } else {
+                    DataServices.login(email, password, new DataServices.AuthResponse() {
+                        @Override
+                        public void onSuccess(String token) {
+                            DataServices.getAccount(token, new DataServices.AccountResponse() {
+                                @Override
+                                public void onSuccess(DataServices.Account account) {
+                                    Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                    mListener.loginIsSuccessful(account);
+                                }
+
+                                @Override
+                                public void onFailure(DataServices.RequestException exception) {
+                                    Log.d("Data", "onFailure: Couldn't get account");
+
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onFailure(DataServices.RequestException exception) {
+                            Toast.makeText(getActivity(), "Invalid Login", Toast.LENGTH_SHORT);
+
+                        }
+                    });
                 }
-                DataServices.Account account = DataServices.login(email, password, token);
-                if(account==null){
-                    Toast.makeText(getActivity(),"Unable to login",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getActivity(),"Login Successfull",Toast.LENGTH_SHORT).show();
-                    mListener.loginIsSuccessful(account);
 
-                }
 
             }
         });
@@ -79,7 +96,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Log.d("test","Login createbutton pushed");
+                Log.d("test", "Login createbutton pushed");
                 mListener.gotoRegistration();
 
             }
@@ -92,15 +109,16 @@ public class LoginFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof LoginListener) {
+        if (context instanceof LoginListener) {
             mListener = (LoginListener) context;
-        }else{
-            throw  new RuntimeException((context.toString()+"must implement loginlistener"));
+        } else {
+            throw new RuntimeException((context.toString() + "must implement loginlistener"));
         }
     }
 
     interface LoginListener {
         void loginIsSuccessful(DataServices.Account account);
+
         void gotoRegistration();
     }
 }

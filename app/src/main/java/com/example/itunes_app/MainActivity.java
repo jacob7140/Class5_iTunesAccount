@@ -1,14 +1,10 @@
 package com.example.itunes_app;
-/*inclass 4
- * @author Shaishav Maisuria
- * @jacob smith
- */
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginListener, RegisterFragment.SignupListener, AccountFragment.AccountListener
-        ,UpdateFragment.UpdateListener
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginListener, RegisterFragment.SignupListener, CategoriesFragment.CategoriesListener
 {
 
     @Override
@@ -16,7 +12,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.rootView,new LoginFragment())
+                .add(R.id.rootView, new LoginFragment())
                 .commit();
     }
 
@@ -26,8 +22,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     public void loginIsSuccessful(DataServices.Account account) {
         this.mAccount= account;
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.rootView, AccountFragment.newInstance(this.mAccount),"accountFragment")
-                .commit();
+                .replace(R.id.rootView, new CategoriesFragment()).commit();
     }
 
     @Override
@@ -44,13 +39,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 .commit();
     }
 
-    @Override
-    public void gotoUpdate() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.rootView,UpdateFragment.newInstance(this.mAccount))
-                .addToBackStack(null)
-                .commit();
-    }
+//    @Override
+//    public void gotoUpdate() {
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.rootView,UpdateFragment.newInstance(this.mAccount))
+//                .addToBackStack(null)
+//                .commit();
+//    }
 
     @Override
     public void logout() {
@@ -60,23 +55,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 .commit();
     }
 
-    @Override
-    public void updateToAccount(DataServices.Account account) {
-        this.mAccount=account;
-
-        AccountFragment accountFragment= (AccountFragment) getSupportFragmentManager().findFragmentByTag("accountFragment");
-        if(accountFragment!=null) {
-            accountFragment.setAccountDetails(mAccount);
-        }
-
-        getSupportFragmentManager().popBackStack();
 
 
-    }
-
-    @Override
-    public void backToAccount() {
-
-        getSupportFragmentManager().popBackStack();
-    }
+//    @Override
+//    public void backToAccount() {
+//
+//        getSupportFragmentManager().popBackStack();
+//    }
 }
