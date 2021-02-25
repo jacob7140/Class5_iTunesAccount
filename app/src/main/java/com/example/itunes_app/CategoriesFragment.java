@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class CategoriesFragment extends Fragment {
     ListView listView;
+    TextView textViewWelcome;
     ArrayAdapter<DataServices> adapter;
+    String mToken;
 
     private static final String ARG_PARAM_ACCOUNT = "ARG_PARAM_ACCOUNT";
 
@@ -49,12 +52,12 @@ public class CategoriesFragment extends Fragment {
 
         }
 
-        Button logoutButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle("App Categories");
+
 
         View view = inflater.inflate(R.layout.fragment_catagories, container, false);
         //listView = view.findViewById(R.id.categoryList);
@@ -62,11 +65,21 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mListener.logout();
-
             }
         });
 
+        DataServices.getAccount(mToken, new DataServices.AccountResponse() {
+            @Override
+            public void onSuccess(DataServices.Account account) {
 
+
+            }
+
+            @Override
+            public void onFailure(DataServices.RequestException exception) {
+
+            }
+        });
 
 
 
