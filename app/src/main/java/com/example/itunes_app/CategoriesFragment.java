@@ -14,16 +14,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class CategoriesFragment extends Fragment {
     ListView listView;
     TextView textViewWelcome;
-    ArrayAdapter<DataServices> adapter;
-    String mToken;
 
-    private static final String ARG_PARAM_ACCOUNT = "ARG_PARAM_ACCOUNT";
+    private static final String ARG_PARAM_TOKEN = "ARG_PARAM_TOKEN";
+    private String mToken;
 
     private DataServices.Account mAccount;
     public void setAccountDetails(DataServices.Account accountDetails){
@@ -33,12 +33,11 @@ public class CategoriesFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // based on what I am looking it should be factor method
-    public static CategoriesFragment newInstance(DataServices.Account account) {
+    public static CategoriesFragment newInstance(String token) {
         CategoriesFragment fragment = new CategoriesFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM_ACCOUNT, account);
-        Log.d("test","Account new Instance");
+        args.putString(ARG_PARAM_TOKEN, token);
+        Log.d("data","Account new Instance");
         fragment.setArguments(args);
         return fragment;
 
@@ -49,8 +48,13 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            mToken = getArguments().getString(ARG_PARAM_TOKEN);
+        }
 
         }
+
+
 
 
     @Override
@@ -60,24 +64,47 @@ public class CategoriesFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_catagories, container, false);
-        //listView = view.findViewById(R.id.categoryList);
-        view.findViewById(R.id.categoriesLogout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.logout();
-            }
-        });
+        textViewWelcome = view.findViewById(R.id.textViewWelcome);
 
+
+        Log.d("data", "onCreateView: " + mToken);
         DataServices.getAccount(mToken, new DataServices.AccountResponse() {
             @Override
             public void onSuccess(DataServices.Account account) {
+                Log.d("data", "onSuccess: Account Created");
+                textViewWelcome.setText("Welcome " + account.getName());
 
+            }
+
+            @Override
+            public void onFailure(DataServices.RequestException exception) {
+                Log.d("data", "onFailure: Failed to create account");
+
+            }
+        });
+
+        listView = view.findViewById(R.id.listView);
+
+
+        DataServices.getAppCategories(mToken, new DataServices.DataResponse<String>() {
+            @Override
+            public void onSuccess(ArrayList<String> data) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, data);
+                listView.setAdapter(adapter);
 
             }
 
             @Override
             public void onFailure(DataServices.RequestException exception) {
 
+            }
+        });
+
+
+        view.findViewById(R.id.categoriesLogout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.logout();
             }
         });
 

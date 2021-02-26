@@ -65,19 +65,10 @@ public class LoginFragment extends Fragment {
                     DataServices.login(email, password, new DataServices.AuthResponse() {
                         @Override
                         public void onSuccess(String token) {
-                            DataServices.getAccount(token, new DataServices.AccountResponse() {
-                                @Override
-                                public void onSuccess(DataServices.Account account) {
-                                    Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                    mListener.loginIsSuccessful(account);
-                                }
+                            mListener.loginIsSuccessful(token);
 
-                                @Override
-                                public void onFailure(DataServices.RequestException exception) {
-                                    Log.d("Data", "onFailure: Couldn't get account");
 
-                                }
-                            });
+
 
                         }
 
@@ -117,7 +108,7 @@ public class LoginFragment extends Fragment {
     }
 
     interface LoginListener {
-        void loginIsSuccessful(DataServices.Account account);
+        void loginIsSuccessful(String token);
 
         void gotoRegistration();
     }

@@ -16,13 +16,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 .commit();
     }
 
-    DataServices.Account mAccount;
+    String mAccount;
 
     @Override
-    public void loginIsSuccessful(DataServices.Account account) {
-        this.mAccount= account;
+    public void loginIsSuccessful(String token) {
+        this.mAccount= token;
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.rootView, new CategoriesFragment()).commit();
+                .replace(R.id.rootView, CategoriesFragment.newInstance(this.mAccount)).commit();
     }
 
     @Override

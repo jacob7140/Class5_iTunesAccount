@@ -57,25 +57,13 @@ public class RegisterFragment extends Fragment {
 
 
                 if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
-                    Toast.makeText(getActivity(), "Password/Email or Password cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Name/Password/Email cannot be empty", Toast.LENGTH_SHORT).show();
 
                 } else {
                     DataServices.register(name, email, password, new DataServices.AuthResponse() {
                         @Override
                         public void onSuccess(String token) {
-                            DataServices.getAccount(token, new DataServices.AccountResponse() {
-                                @Override
-                                public void onSuccess(DataServices.Account account) {
-                                    Toast.makeText(getContext(), "Successful Registration", Toast.LENGTH_SHORT).show();
-                                    mListener.loginIsSuccessful(account);
-                                }
-
-                                @Override
-                                public void onFailure(DataServices.RequestException exception) {
-                                    Log.d("data", "onFailure: Could not get account");
-
-                                }
-                            });
+                           mListener.loginIsSuccessful(token);
 
                         }
 
@@ -117,7 +105,7 @@ public class RegisterFragment extends Fragment {
     }
 
     interface SignupListener {
-        void loginIsSuccessful(DataServices.Account account);
+        void loginIsSuccessful(String token);
         void gotoLogin();
     }
 }
