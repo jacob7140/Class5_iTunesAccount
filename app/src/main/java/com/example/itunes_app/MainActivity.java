@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginListener, RegisterFragment.SignupListener, CategoriesFragment.CategoriesListener
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginListener, RegisterFragment.SignupListener, CategoriesFragment.CategoriesListener, AppList.AppListListener, AppDetailsFragment.AppDetailsListener
 {
 
     @Override
@@ -39,13 +39,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 .commit();
     }
 
-//    @Override
-//    public void gotoUpdate() {
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.rootView,UpdateFragment.newInstance(this.mAccount))
-//                .addToBackStack(null)
-//                .commit();
-//    }
+    @Override
+    public void goToAppList(String token, String category) {
+        this.mAccount= token;
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.rootView, AppList.newInstance(this.mAccount, category)).commit();
+    }
 
     @Override
     public void logout() {
@@ -55,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 .commit();
     }
 
+    @Override
+    public void goToDetails(String data) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.rootView, AppDetailsFragment.newInstance(data)).commit();
+    }
 
 
 //    @Override

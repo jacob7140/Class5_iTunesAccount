@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,7 +24,9 @@ public class CategoriesFragment extends Fragment {
     TextView textViewWelcome;
 
     private static final String ARG_PARAM_TOKEN = "ARG_PARAM_TOKEN";
+    private static final String DATA = "category";
     private String mToken;
+    private String mData;
 
     private DataServices.Account mAccount;
     public void setAccountDetails(DataServices.Account accountDetails){
@@ -91,6 +94,14 @@ public class CategoriesFragment extends Fragment {
             public void onSuccess(ArrayList<String> data) {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, data);
                 listView.setAdapter(adapter);
+                
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("data", "onItemClick: " + position);
+                        mListener.goToAppList(mToken, data.get(position));
+                    }
+                });
 
             }
 
@@ -123,5 +134,6 @@ public class CategoriesFragment extends Fragment {
 
     interface CategoriesListener {
         void logout();
+        void goToAppList(String token, String category);
     }
 }
