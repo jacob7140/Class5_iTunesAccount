@@ -94,7 +94,8 @@ public class AppList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("data", "onItemClick: " + position);
-                mListener.goToDetails(DATA);
+                adapter.notifyDataSetChanged();
+                mListener.goToDetails();
             }
         });
 
@@ -112,7 +113,7 @@ public class AppList extends Fragment {
     }
 
     interface AppListListener {
-        void goToDetails(String data);
+        void goToDetails();
 
     }
 }
