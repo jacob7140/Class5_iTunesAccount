@@ -1,5 +1,6 @@
 package com.example.itunes_app;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -54,15 +55,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
                 .commit();
     }
 
+
+
+    DataServices.App mApp;
     @Override
-    public void goToDetails(String data) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.rootView, AppDetailsFragment.newInstance(data)).commit();
+    public void goToDetails(DataServices.App application) {
+        mApp = application;
+        //getSupportFragmentManager().beginTransaction().replace(R.id.rootView, AppDetailsFragment.newInstance(mApp), "AppDetails").addToBackStack("AppDetails").commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.rootView, AppDetailsFragment.newInstance(mApp),"AppDetails")
+                .addToBackStack("AppDetails")
+                .commit();
+
     }
 
 
-//    @Override
-//    public void backToAccount() {
-//
-//        getSupportFragmentManager().popBackStack();
-//    }
+
 }

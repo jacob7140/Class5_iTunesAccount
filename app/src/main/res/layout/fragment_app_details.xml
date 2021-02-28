@@ -4,50 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AppDetailsFragment" >
+    tools:context=".AppDetailsFragment">
+
+    <TextView
+        android:id="@+id/textViewAppNameAppDetails"
+        android:layout_width="273dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewArtistNameAppDetails"
+        android:layout_width="273dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewAppNameAppDetails"
+        app:layout_constraintStart_toStartOf="@+id/textViewAppNameAppDetails"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAppNameAppDetails" />
+
+    <TextView
+        android:id="@+id/textViewReleaseDateAppDetails"
+        android:layout_width="155dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewArtistNameAppDetails"
+        app:layout_constraintStart_toStartOf="@+id/textViewArtistNameAppDetails"
+        app:layout_constraintTop_toBottomOf="@+id/textViewArtistNameAppDetails" />
 
     <ListView
-        android:id="@+id/genresListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
+        android:id="@+id/listViewAppDetailsGenre"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewGenresAppDetails" />
 
     <TextView
-        android:id="@+id/detailsAppName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/textViewGenresAppDetails"
+        android:layout_width="95dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:text="@string/stringGenres"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/detailsArtistName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailsAppName" />
-
-    <TextView
-        android:id="@+id/detailsReleaseDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailsArtistName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewReleaseDateAppDetails" />
 </androidx.constraintlayout.widget.ConstraintLayout>

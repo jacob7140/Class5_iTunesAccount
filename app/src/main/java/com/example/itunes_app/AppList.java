@@ -95,7 +95,7 @@ public class AppList extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("data", "onItemClick: " + position);
                 adapter.notifyDataSetChanged();
-                mListener.goToDetails();
+                mListener.goToDetails(adapter.getItem(position));
             }
         });
 
@@ -113,7 +113,7 @@ public class AppList extends Fragment {
     }
 
     interface AppListListener {
-        void goToDetails();
+        void goToDetails(DataServices.App application);
 
     }
 }

@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -20,18 +22,19 @@ import android.widget.TextView;
 public class AppDetailsFragment extends Fragment {
 
     private static final String DATA = "details";
-    private String mData;
+    private static final String ARG_PARAM_APPDETAILS = "ARG_PARAM_APPDETAILS";
+    DataServices.App mApp;
 
     public AppDetailsFragment() {
         // Required empty public constructor
     }
 
 
-    public static AppDetailsFragment newInstance(String details) {
+    public static AppDetailsFragment newInstance(DataServices.App App) {
         AppDetailsFragment fragment = new AppDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(DATA, details);
-        Log.d("data","Account new Instance");
+        args.putSerializable(ARG_PARAM_APPDETAILS, App);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,22 +42,36 @@ public class AppDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null){
-            mData = getArguments().getString(DATA);
+        if (getArguments() != null) {
+            mApp = (DataServices.App)getArguments().getSerializable(ARG_PARAM_APPDETAILS);
         }
     }
 
+    TextView artistName;
+    TextView appName;
+    TextView releaseDate;
+    ListView listView;
+    ArrayAdapter<String> adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_app_details, container, false);
-        //DataServices.App app = new DataServices.App(mData);
+        View view= inflater.inflate(R.layout.fragment_app_details, container, false);
 
-        Log.d("data", "onCreateView: " + mData);
+        getActivity().setTitle("App Details");
 
-        TextView appName = view.findViewById(R.id.detailsAppName);
-        //appName.setText(app.name);
+        artistName=view.findViewById(R.id.textViewArtistNameAppDetails);
+        appName=view.findViewById(R.id.textViewAppNameAppDetails);
+        releaseDate=view.findViewById(R.id.textViewReleaseDateAppDetails);
+
+        artistName.setText(mApp.artistName);
+        appName.setText(mApp.name);
+        releaseDate.setText(mApp.releaseDate);
+
+        listView=view.findViewById(R.id.listViewAppDetailsGenre);
+
+        adapter =new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,mApp.genres);
+        listView.setAdapter(adapter);
 
         return view;
     }
